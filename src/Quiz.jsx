@@ -3,38 +3,56 @@ import { v4 as uuidv4 } from 'uuid';
 import {decode} from 'he';
 
 export default function Quiz(props) {
-    const [questionData, setQuestionData] = React.useState({})
+    const [questionData, setQuestionData] = React.useState(generateQuizData())
     const [quizElements, setQuizElements] = React.useState(quizElementsGenerator())
     console.log(questionData)
-    console.log(quizElements)
+    
     // run only once setting up the form data when the component mounts using a map to allow for varied amounts of questions.
-    React.useEffect(() => {
-        props.data.results.map((question) => {
-            setQuestionData(prevQuestion=>({
-                ...prevQuestion,
-                [question.question]: ""
-            }))            
-        })
-    },[props])
+  function generateQuizData(){
+      return(
+        props.data.results.map((question)=>{
+          let id = uuidv4()
+          return(
+                    {
+                        ...question,
+                        id : id,
+                        checkedAnswer : false
+                    }
+               )
+          })
+        )        
+    }
+
+        
 
     function checkAnswers(){
-            for(let i = 0; i < props.data.results.length; i++){
-                if(questionData[props.data.results[i].question] === props.data.results[i].correct_answer){
-                    console.log("correct")
-                } else{
-                    console.log("incorrect")
-                }
-            }
+            // for(let i = 0; i < props.data.results.length; i++){
+            //     if(questionData[props.data.results[i].question] === props.data.results[i].correct_answer){
+            //         console.log("correct")
+            //     } else{
+            //         console.log("incorrect")
+            //     }
+            // }
+            console.log("clicked")
     }
     
     // standard form data handling for controled components
     function handleChange(e){
         const {name, value} = e.target
         setQuestionData(prevQuestion=>{
-            return{
-                ...prevQuestion,
-                [name]: value
-            }
+            return(
+                prevQuestion.map(question=>{
+                    if(question.id === name){
+                        return{
+                            ...question,
+                            [name]: value
+                        }
+                    }else{
+                        return question
+                    }
+                })
+            )
+            
         })
         console.log('clicked')
     }
@@ -45,11 +63,10 @@ export default function Quiz(props) {
      * @return {Array} an array of quiz elements
      */
     function quizElementsGenerator(){
-        return(props.data.results.map((question)=>{
-           let id = uuidv4()
+        return(questionData.map((question)=>{
            let decodedQuestion = decode(question.question)
            return(
-               <div key={id} id={id} className="question">
+               <div key={question.id} id={question.id} className="question">
                    <h2>{decodedQuestion}</h2>
                    <fieldset className="answer-container">
                        <legend>Select an answer</legend>
@@ -76,7 +93,7 @@ export default function Quiz(props) {
             let decodedAnswer = decode(answer)
             return ( <div key={id}className="answers">
                         <label htmlFor={id}>{decodedAnswer}</label>
-                        <input id={id} name={question.question} value={answer} onChange={handleChange} type="radio"/>
+                        <input id={id} name={question.id} value={answer} onChange={handleChange} type="radio"/>
                     </div>)
         })
     }
