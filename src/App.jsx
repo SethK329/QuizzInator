@@ -4,29 +4,46 @@ import Quiz from './Quiz.jsx'
 function App() {
 
   const [gameState, setGameState] = React.useState(false)
+  const[newQuestions, setNewQuestions] = React.useState(true)
   const [quizData, setQuizData] = React.useState()
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await fetch("https://opentdb.com/api.php?amount=5")
-      const data = await response.json()
-      setQuizData(data)
-      console.log(quizData)      
+      if(newQuestions){
+        const response = await fetch("https://opentdb.com/api.php?amount=5")
+        if(!response.ok){
+          throw new Error("no response from server")
+  
+        }
+        const data = await response.json()
+        setQuizData(data)
+        console.log(quizData)      
+      }
     }
 
     fetchData()
-  }, [])
+  }, [newQuestions])
 
 
   function handleClick() {
-    setGameState(true)
+    if(quizData){
+      setGameState(true)
+      setNewQuestions(false)
+    }
     console.log('clicked')
+  }
+
+  function restartGame() {
+    setGameState(false)
+    setNewQuestions(true)
   }
 
     return (
       <div> 
         {!gameState && <Intro handleClick={handleClick}/>}        
-        {gameState && <Quiz data={quizData}/>}  
+        {gameState && <Quiz data={quizData}
+                            restartGame={restartGame}
+        />}
       </div>
     )
 }

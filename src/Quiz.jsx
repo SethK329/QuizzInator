@@ -4,19 +4,30 @@ import {decode} from 'he';
 
 export default function Quiz(props) {
     const [questionData, setQuestionData] = React.useState(generateQuizData())
-    const [quizElements, setQuizElements] = React.useState(quizElementsGenerator())
-    console.log(questionData)
+    const [quizElements, setQuizElements] = React.useState([])
+    const [newGame, setNewGame] = React.useState(false)
     
+
+    // sets state on mount with the quiz elements and then when the check answers button is clicked and newGame is set to true
+    React.useEffect(() => {
+        setQuizElements(quizElementsGenerator())
+    },[newGame])
+
+
     // run only once setting up the form data when the component mounts using a map to allow for varied amounts of questions.
-  function generateQuizData(){
+    function generateQuizData(){
       return(
         props.data.results.map((question)=>{
           let id = uuidv4()
+            // building an array with all the answers
+            let questionsArray = [...question.incorrect_answers, question.correct_answer]
+            // shuffling the array except for the booleans. This makes them all render the same way(true, false)
+            let randomArray = question.type==="boolean"? questionsArray.sort().reverse(): questionsArray.sort(() => Math.random() - 0.5)
           return(
                     {
                         ...question,
+                        answersArray:randomArray,
                         id : id,
-                        checkedAnswer : false
                     }
                )
           })
@@ -26,22 +37,22 @@ export default function Quiz(props) {
         
 
     function checkAnswers(){
-            // for(let i = 0; i < props.data.results.length; i++){
-            //     if(questionData[props.data.results[i].question] === props.data.results[i].correct_answer){
-            //         console.log("correct")
-            //     } else{
-            //         console.log("incorrect")
-            //     }
-            // }
-            console.log("clicked")
+                // changing to true triggers a re-render of the quiz to show answers as well as change the button to start a new game.
+                setNewGame(true)
     }
     
-    // standard form data handling for controled components
+
+    /**
+     * Handles the change event and updates the question data.
+     *
+     * @param {object} e - the event object
+     * @return {void} 
+     */
     function handleChange(e){
         const {name, value} = e.target
-        setQuestionData(prevQuestion=>{
+        setQuestionData(prevQuestionData=>{
             return(
-                prevQuestion.map(question=>{
+                prevQuestionData.map(question=>{
                     if(question.id === name){
                         return{
                             ...question,
@@ -54,13 +65,14 @@ export default function Quiz(props) {
             )
             
         })
-        console.log('clicked')
     }
 
     /**
      * Generates quiz elements based on the data results.
      * gets called when initializing quizElements state
      * @return {Array} an array of quiz elements
+     * by setting things in state the values don't get recalculated every render
+     * which was shuffling the answers repeatedly
      */
     function quizElementsGenerator(){
         return(questionData.map((question)=>{
@@ -70,7 +82,7 @@ export default function Quiz(props) {
                    <h2>{decodedQuestion}</h2>
                    <fieldset className="answer-container">
                        <legend>Select an answer</legend>
-                       {randomizeAnswers(question)}    
+                       {generateAnswers(question)}    
                    </fieldset>
                </div>
    
@@ -85,14 +97,27 @@ export default function Quiz(props) {
      * @param {object} question - the question object containing incorrect and correct answers
      * @return {array} an array of JSX elements representing the randomized answers
      */
-    function randomizeAnswers(question){
-        let questionsArray = [...question.incorrect_answers, question.correct_answer]
-        let randomArray = questionsArray.sort(() => Math.random() - 0.5)
-        return randomArray.map((answer) =>{
+    function generateAnswers(question){
+        // using the data from state build out the answer list
+        let classList="answer"
+        return question.answersArray.map((answer) =>{
+            classList = "answer"
+            // this "if" checks for the checked answers button to be clicked
+            if(newGame){
+                // this "if" is to style the selected input and the right answer correct or incorrect
+                if(answer===question[question.id]||answer===question.correct_answer){
+                    console.log(`selectedAnswer: ${answer} + ${question[question.id]}`)
+                    console.log(`"CorrectAnswer: "${answer} + ${question.correct_answer}"`)
+                    classList = answer===question.correct_answer?"answer correct":"answer incorrect"                    
+                }                    
+            }
+            
+            // build out the JSX of the randomized answers to plug into the question element
+            // matched the ID to the name value so that I can control the component and check answers
             let id =uuidv4()
             let decodedAnswer = decode(answer)
-            return ( <div key={id}className="answers">
-                        <label htmlFor={id}>{decodedAnswer}</label>
+            return ( <div key={id} className={classList}>
+                        <label htmlFor={id}> {decodedAnswer} </label>
                         <input id={id} name={question.id} value={answer} onChange={handleChange} type="radio"/>
                     </div>)
         })
@@ -101,7 +126,7 @@ export default function Quiz(props) {
     return(
         <div>
             {quizElements}
-            <button onClick={checkAnswers}>Check Answers</button>
+            {newGame? <button onClick={props.restartGame}>Start New Game</button>:<button onClick={checkAnswers}>Check Answers</button>}
         </div>
     )
 }
