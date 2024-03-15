@@ -19,7 +19,7 @@ html{
 
 body{
   min-height: 100dvh;
-  width: 100dvw;
+  max-width: 100dvw;
   padding: 2rem;
   display: flex;
   justify-content: center;
@@ -30,6 +30,17 @@ body{
 fieldset{
   border:none;
 }
+
+button{
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  background-color: darkgrey;
+  color: black;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-top: 1.5em;
+}
+
 .answer-container{
   display: flex;
   flex-direction: row;
@@ -38,3 +49,34 @@ fieldset{
   gap: 2rem;
 }
 
+.answer{
+  border-radius: 5px;
+}
+
+.answer>label{
+  display: block;
+  border: solid 2px white;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.answer:has(input:checked){
+  border-radius: 5px;
+  background-color: darkgrey;
+  color: black;
+}
+
+.answer>input{
+  display: none;
+}
+
+.correct{
+  color: green;
+  box-shadow:  0 0 2px 4px green;
+}
+
+.incorrect{
+  color: red;
+  box-shadow:  0 0 2px 4px red;
+}
