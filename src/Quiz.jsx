@@ -6,8 +6,7 @@ export default function Quiz(props) {
     const [questionData, setQuestionData] = React.useState(generateQuizData())
     const [quizElements, setQuizElements] = React.useState([])
     const [newGame, setNewGame] = React.useState(false)
-    
-
+    const [correctAnswers, setCorrectAnswers] = React.useState(0)
     // sets state on mount with the quiz elements and then when the check answers button is clicked and newGame is set to true
     React.useEffect(() => {
         setQuizElements(quizElementsGenerator())
@@ -35,10 +34,15 @@ export default function Quiz(props) {
     }
 
         
-
+    console.log(correctAnswers)
     function checkAnswers(){
+                // checking if the answer is correct
+                setCorrectAnswers(questionData.filter(question=>question.correct_answer===question.name)) 
+                console.log(correctAnswers)
+
                 // changing to true triggers a re-render of the quiz to show answers as well as change the button to start a new game.
                 setNewGame(true)
+
     }
     
 
@@ -101,14 +105,12 @@ export default function Quiz(props) {
         // using the data from state build out the answer list
         let classList="answer"
         return question.answersArray.map((answer) =>{
-            classList = "answer"
             // this "if" checks for the checked answers button to be clicked
             if(newGame){
+                classList = "answer checked"
                 // this "if" is to style the selected input and the right answer correct or incorrect
                 if(answer===question[question.id]||answer===question.correct_answer){
-                    console.log(`selectedAnswer: ${answer} + ${question[question.id]}`)
-                    console.log(`"CorrectAnswer: "${answer} + ${question.correct_answer}"`)
-                    classList = answer===question.correct_answer?"answer correct":"answer incorrect"                    
+                    classList = answer===question.correct_answer?"answer correct":"answer checked incorrect"                    
                 }                    
             }
             
@@ -118,15 +120,18 @@ export default function Quiz(props) {
             let decodedAnswer = decode(answer)
             return ( <div key={id} className={classList}>
                         <label htmlFor={id}> {decodedAnswer} </label>
-                        <input id={id} name={question.id} value={answer} onChange={handleChange} type="radio"/>
+                        <input disabled={newGame} id={id} name={question.id} value={answer} onChange={handleChange} type="radio"/>
                     </div>)
         })
     }
 
     return(
-        <div>
+        <div className="quiz">
             {quizElements}
-            {newGame? <button onClick={props.restartGame}>Start New Game</button>:<button onClick={checkAnswers}>Check Answers</button>}
+            <div className="result-container">
+            <p>{correctAnswers}/{questionData.length} questions</p>
+            {newGame? <button onClick={props.restartGame}>Play again</button>:<button onClick={checkAnswers}>Check Answers</button>}
+            </div>
         </div>
     )
 }
