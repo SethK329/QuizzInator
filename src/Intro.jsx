@@ -45,7 +45,7 @@ function handleChange(e){
         )
     })
 }
-// passes the users selections for the quiz up to the app component where the fetch is run, that data gets passes to the quiz component
+// passes the users selections for the quiz up to the app component where the fetch is run, that data gets passed to the quiz component
 function submitForm(e){
     e.preventDefault()
     props.handleClick(formData)
@@ -80,7 +80,8 @@ function submitForm(e){
                 <br></br>
                 Let's take a quiz!
             </p>
-            <button onClick={submitForm}>Start Game</button>
+            {props.errorMessage && <p className="error-message">Oops, something went wrong, try again or refresh</p>}
+            <button onClick={submitForm} disabled={props.errorMessage}>Start Game</button>
         </div>
     )
 }

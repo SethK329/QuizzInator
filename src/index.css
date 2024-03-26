@@ -75,6 +75,11 @@ button{
   color: var(--background-color-light);
   font-size: 1.5rem;
   cursor: pointer;
+  transition: all 50ms ease-in;
+}
+
+button:active{
+  transform: scale(.9);
 }
 
 .quiz,.intro{
@@ -85,11 +90,12 @@ button{
 }
 
 .intro{
-  gap:.5rem;
+  gap:1rem;
   text-align: center;
   height: 100dvh;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .question{
@@ -184,9 +190,21 @@ button{
   gap: 1rem;
   
 }
+
 .result-container>p{
   font-size: 1.25rem;
   font-weight: 600;
+}
+
+.error-message{
+  background-color: var(--background-color-light);
+  border: var(--incorrect-answer-light) solid 2px;
+  padding: .5rem;
+  border-radius: 15px;
+  position:absolute;
+  top:70%;
+  height: fit-content;
+  width: fit-content;
 }
 
 @keyframes bg-animation {

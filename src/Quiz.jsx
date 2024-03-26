@@ -31,7 +31,6 @@ export default function Quiz(props) {
           })
         )        
     }
-
         
     function checkAnswers(){
                 // checking if the answer is correct
@@ -66,7 +65,6 @@ export default function Quiz(props) {
             
         })
     }
-    console.log(newGame)
     /**
      * Generates quiz elements based on the data results.
      * gets called when initializing quizElements state

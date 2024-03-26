@@ -5,6 +5,15 @@ function App() {
 
   const [gameActive, setGameActive] = React.useState(false)
   const [quizData, setQuizData] = React.useState()
+  const [errorMessage, setErrorMessage] = React.useState(false)
+
+
+// this is run when the error message is triggered and removes the message after 5 seconds
+React.useEffect(()=>{
+    const errorTimer = setTimeout(()=>setErrorMessage(false), 5000)
+    console.log("i ran")
+    return ()=>clearTimeout(errorTimer)
+},[errorMessage])
 
 // this is run when the intro button is clicked, check for what selections were made and adjust the fetch accordingly
   async function handleClick(formData) {
@@ -12,8 +21,8 @@ function App() {
     const difficultyValue = formData.difficulty==="any"? "":`&difficulty=${formData.difficulty}`
     try{
       const response = await fetch(`https://opentdb.com/api.php?amount=${formData.amount}${categoryValue}${difficultyValue}`)
-      if(!response.ok||!response){
-        throw new Error("no response from server wait five seconds and try again")    
+      if(!response.ok){
+        throw new Error("no response from server")    
       }else{
         const data = await response.json()
         setQuizData(data)
@@ -22,7 +31,9 @@ function App() {
       }
 
     }catch(error){
+      // this triggers a useEffect that conditionally renders an error message for 5 seconds
       console.log(error)
+      setErrorMessage(true)
     }
   }
 
@@ -33,7 +44,7 @@ function App() {
 
     return (
       <div> 
-        {!gameActive && <Intro handleClick={handleClick}/>}        
+        {!gameActive && <Intro handleClick={handleClick} errorMessage={errorMessage}/>}        
         {gameActive && <Quiz data={quizData}
                             restartGame={restartGame}
         />}
