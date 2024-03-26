@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function Intro(props){
+    // This is the list of categories for the quiz
     const [categories, setCategories] = React.useState([{id: 9, name: 'General Knowledge'},
                                                         {id: 10, name: 'Entertainment: Books'}, 
                                                         {id: 11, name: 'Entertainment: Film'},
@@ -27,10 +28,28 @@ export default function Intro(props){
                                                         {id: 32, name: 'Entertainment: Cartoon & Animations'}
                                                     ])
 
+// basic quiz options by default
+const [formData, setFormData] = React.useState({category: 'any', difficulty: 'easy', amount: '5'});
 
-const [formData, setFormData] = React.useState({category: 'any', difficulty: 'easy', questionAmount: '5'});
+const categoriesElements = categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>);
 
-const categoriesElements = categories.map(category => <option key={category.id} value={category.name} name="category">{category.name}</option>);
+// makes the user inputs controlled components so that the updated data can be passed when needed.
+function handleChange(e){
+    const {name, value} = e.target
+    setFormData(prevFormData=>{
+        return(
+            {
+                ...prevFormData,
+                [name]: value
+            }
+        )
+    })
+}
+// passes the users selections for the quiz up to the app component where the fetch is run, that data gets passes to the quiz component
+function submitForm(e){
+    e.preventDefault()
+    props.handleClick(formData)
+}
 
     return(
         <div className="intro">
@@ -38,30 +57,30 @@ const categoriesElements = categories.map(category => <option key={category.id} 
             <fieldset className="options">
                 <legend>Quiz Options</legend>
                 <label htmlFor="category">Choose a category:</label>
-                <select id="category" onChange={handleChange}>
-                    <option key="8" value="any"name="category">Any Category</option>
+                <select id="category" name="category" onChange={handleChange}>
+                    <option key="8" value="any" >Any Category</option>
                     {categoriesElements}
                 </select>
                 <label htmlFor="difficulty">Choose difficulty:</label>
-                <select id="difficulty" onChange={handleChange}>
-                    <option value="any" name="difficulty">Any</option>
-                    <option value="easy" name="difficulty">Easy</option>
-                    <option value="medium" name="difficulty">Medium</option>
-                    <option value="hard" name="difficulty">Hard</option>
+                <select id="difficulty" name="difficulty" onChange={handleChange}>
+                    <option value="any" >Any</option>
+                    <option value="easy" >Easy</option>
+                    <option value="medium" >Medium</option>
+                    <option value="hard" >Hard</option>
                 </select>
-                <label htmlFor="questionAmount">Number of questions:</label>
-                <select id="questionAmount" onChange={handleChange}>
-                    <option value="5" name="questionAmount">5</option>
-                    <option value="10" name="questionAmount">10</option>
-                    <option value="15" name="questionAmount">15</option>
-                    <option value="20" name="questionAmount">20</option>
+                <label htmlFor="amount">Number of questions:</label>
+                <select id="amount" name="amount" onChange={handleChange}>
+                    <option value="5" >5</option>
+                    <option value="10" >10</option>
+                    <option value="15" >15</option>
+                    <option value="20" >20</option>
                 </select>
             </fieldset>
             <p>If quizzes are quizzical what does that make tests?
                 <br></br>
                 Let's take a quiz!
             </p>
-            <button onClick={props.handleClick}>Start Game</button>
+            <button onClick={submitForm}>Start Game</button>
         </div>
     )
 }

@@ -7,18 +7,17 @@ export default function Quiz(props) {
     const [quizElements, setQuizElements] = React.useState([])
     const [newGame, setNewGame] = React.useState(false)
     const [correctAnswers, setCorrectAnswers] = React.useState(0)
-    // sets state on mount with the quiz elements and then when the check answers button is clicked and newGame is set to true
+    // sets state when new data comes in with the quiz elements and then when the check answers button is 
     React.useEffect(() => {
         setQuizElements(quizElementsGenerator())
     },[newGame])
-
 
     // run only once setting up the form data when the component mounts using a map to allow for varied amounts of questions.
     function generateQuizData(){
       return(
         props.data.results.map((question)=>{
           let id = uuidv4()
-            // building an array with all the answers
+            // building an array with all the answers once per fetch
             let questionsArray = [...question.incorrect_answers, question.correct_answer]
             // shuffling the array except for the booleans. This makes them all render the same way(true, false)
             let randomArray = question.type==="boolean"? questionsArray.sort().reverse(): questionsArray.sort(() => Math.random() - 0.5)
@@ -34,12 +33,9 @@ export default function Quiz(props) {
     }
 
         
-    console.log(correctAnswers)
     function checkAnswers(){
                 // checking if the answer is correct
-                setCorrectAnswers(questionData.filter(question=>question.correct_answer===question.name)) 
-                console.log(correctAnswers)
-
+                setCorrectAnswers(questionData.filter(question=>question.correct_answer===question[question.id]).length) 
                 // changing to true triggers a re-render of the quiz to show answers as well as change the button to start a new game.
                 setNewGame(true)
 
@@ -70,7 +66,7 @@ export default function Quiz(props) {
             
         })
     }
-
+    console.log(newGame)
     /**
      * Generates quiz elements based on the data results.
      * gets called when initializing quizElements state
@@ -79,13 +75,14 @@ export default function Quiz(props) {
      * which was shuffling the answers repeatedly
      */
     function quizElementsGenerator(){
-        return(questionData.map((question)=>{
+        // let unansweredQuestionStyle = ""
+        return(questionData.map((question)=>{ 
            let decodedQuestion = decode(question.question)
            return(
                <div key={question.id} id={question.id} className="question">
                    <h2>{decodedQuestion}</h2>
-                   <fieldset className="answer-container">
-                       <legend>Select an answer</legend>
+                   <fieldset id="answer-container" className={question[question.id]??!newGame?"answer-container":"answer-container unanswered"}>
+                       <legend htmlFor="answer-container">Select an answer</legend>
                        {generateAnswers(question)}    
                    </fieldset>
                </div>
@@ -94,7 +91,6 @@ export default function Quiz(props) {
        }))
         
     }
-
     /**
      * Randomizes the answers for a given question and returns a mapped array of JSX elements for each answer.
      *
@@ -129,7 +125,7 @@ export default function Quiz(props) {
         <div className="quiz">
             {quizElements}
             <div className="result-container">
-            <p>{correctAnswers}/{questionData.length} questions</p>
+            {newGame&&<p>You Scored {correctAnswers}/{questionData.length} correct answers</p>}
             {newGame? <button onClick={props.restartGame}>Play again</button>:<button onClick={checkAnswers}>Check Answers</button>}
             </div>
         </div>
