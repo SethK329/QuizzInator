@@ -1,5 +1,5 @@
 import React from "react";
-import ThemeToggle from './ThemeToggle.jsx'
+import Nav from './Nav.jsx'
 import { v4 as uuidv4 } from 'uuid';
 import {decode} from 'he';
 
@@ -122,7 +122,7 @@ export default function Quiz(props) {
 
     return(
         <div className="quiz">
-            <ThemeToggle/> 
+            <Nav restartGame={props.restartGame}/> 
             {quizElements}
             <div className="result-container">
             {newGame&&<p>You Scored {correctAnswers}/{questionData.length} correct answers</p>}
