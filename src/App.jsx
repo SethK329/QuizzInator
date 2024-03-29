@@ -6,12 +6,11 @@ function App() {
   const [gameActive, setGameActive] = React.useState(false)
   const [quizData, setQuizData] = React.useState()
   const [errorMessage, setErrorMessage] = React.useState(false)
-
+  const [loadingSpinner, setLoadingSpinner] = React.useState(false)
 
 // this is run when the error message is triggered and removes the message after 5 seconds
 React.useEffect(()=>{
     const errorTimer = setTimeout(()=>setErrorMessage(false), 5000)
-    console.log("i ran")
     return ()=>clearTimeout(errorTimer)
 },[errorMessage])
 
@@ -43,7 +42,7 @@ React.useEffect(()=>{
   }
 
     return (
-      <div> 
+      <div>
         {!gameActive && <Intro handleClick={handleClick} errorMessage={errorMessage}/>}        
         {gameActive && <Quiz data={quizData}
                             restartGame={restartGame}

@@ -2,12 +2,31 @@
   font-family: system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  --background-color-light: #F5F7FB;
-  --font-color-light: #293264;
-  --button-color-light: #4D5B9E;
-  --selected-answer-light: #ADB7EB;
-  --correct-answer-light: #94D7A2;
-  --incorrect-answer-light: #F8BCBC;
+  --bg-color: #F5F7FB;
+  --font-color: #293264;
+  --button-color: #4D5B9E;
+  --selected-answer: #ADB7EB;
+  --correct-answer: #94D7A2;
+  --incorrect-answer: #F8BCBC;
+  --bg-gradient:  radial-gradient(
+    farthest-corner circle at 100% 0% in oklab,
+    oklch(97% 0.18 107/ 50%) -8% -8%, 24%, oklch(90% 0 101) 34% 51%, oklch(71% 0.15 221 / 50%) 100%
+  );
+  --theme-image: url("./public/sunIcon.png");
+}
+
+.dark-mode{
+  --bg-color: #293264;
+  --font-color: #F5F7FB;
+  --button-color: #ADB7EB;
+  --selected-answer: #4D5B9E;
+  --correct-answer: #43A858;
+  --incorrect-answer: #E31C1C;
+  --bg-gradient:  radial-gradient(
+    farthest-corner circle at 100% 0% in oklab,
+    oklch(35% 0.18 107) -8% -8%, 24%, oklch(30% 0 0) 34% 51%, oklch(30% 0.15 225 / 100%) 100%
+  );
+  --theme-image: url("./public/moonIcon.jpg");
 }
 
 *{
@@ -16,25 +35,31 @@
   box-sizing: border-box;
 }
 
-html{
-  min-height: 100dvh;
-  background-color: var(--background-color-light);
-  background-image: 
-  radial-gradient(
-    farthest-corner circle at 100% 0% in oklab,
-    oklch(97% 0.18 107/ 50%) -8% -8%, 24%, oklch(90% 0 101) 34% 51%, oklch(71% 0.15 221 / 50%) 100%
-  );
-  background-size: 200%;
-  background-repeat: no-repeat;
-  animation: bg-animation 120s infinite alternate;
-}
-
 body{
   height:100%;
   padding: 2rem;
   display: flex;
   justify-content: center;
-  color: var(--font-color-light);
+  color: var(--font-color);
+  background-color: var(--bg-color);
+  background-image: var(--bg-gradient);
+  background-size: 200%;
+  background-repeat: no-repeat;
+  animation: bg-animation 120s infinite alternate;
+}
+
+.theme-toggle{
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  background-image: var(--theme-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  cursor: pointer;
+  position:absolute;
+  right:0;
+  top:0;
 }
 
 select{
@@ -42,7 +67,7 @@ select{
   min-width: 100px;
   text-align: center;
   padding: .5rem .25rem;
-  border-color: var(--button-color-light);
+  border-color: var(--button-color);
   border-radius: 15px;
   cursor: pointer;
   font-size: 1rem;
@@ -51,7 +76,7 @@ select{
 
 select:focus,
 select:active{
-  border-color: var(--button-color-light);
+  border-color: var(--button-color);
 }
 
 .options{
@@ -60,19 +85,19 @@ select:active{
   align-items: center;
   padding: .5rem;
   border-radius: 5px;
-  border-color: var(--font-color-light);
+  border-color: var(--font-color);
   font-weight: 500;
 
 }
 
-button{
+.button{
   width: max-content;
   align-self: center;
   padding: 1rem 2rem;
   border-radius: 15px;
   border: none;
-  background-color: var(--button-color-light);
-  color: var(--background-color-light);
+  background-color: var(--button-color);
+  color: var(--bg-color);
   font-size: 1.5rem;
   cursor: pointer;
   transition: all 50ms ease-in;
@@ -87,6 +112,12 @@ button:active{
   flex-direction: column;
   gap: 2rem;
   max-width: 600px;
+  position: relative;
+}
+
+.quiz{
+  padding-top: 3rem;
+
 }
 
 .intro{
@@ -109,7 +140,7 @@ button:active{
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 1.5rem .5rem;
   border: none;
 }
@@ -121,8 +152,9 @@ button:active{
 
 .answer{
   border-radius: 15px;
-  border: solid 2px var(--button-color-light);
-  background-color: var(--background-color-light);
+  border: solid 2px var(--button-color);
+  background-color: var(--bg-color);
+  text-align: center;
 }
 
 .answer>label{
@@ -138,7 +170,7 @@ button:active{
 
 .answer:has(input:checked){
   border-radius: 15px;
-  background-color: var(--selected-answer-light);
+  background-color: var(--selected-answer);
   border: none;
 }
 
@@ -147,11 +179,11 @@ button:active{
 }
 
 .correct{
-  background-color: var(--correct-answer-light);
+  background-color: var(--correct-answer);
 }
 
 .incorrect{
-  background-color: var(--incorrect-answer-light);
+  background-color: var(--incorrect-answer);
 }
 
 .checked{
@@ -163,7 +195,7 @@ button:active{
 }
 
 .unanswered{
-  box-shadow:inset 0 0 20px 4px var(--incorrect-answer-light);
+  box-shadow:inset 0 0 20px 4px var(--incorrect-answer);
   border-radius: 15px;
   position: relative;
 }
@@ -171,14 +203,15 @@ button:active{
 .unanswered:after{
   content:"Unanswered";
   position: absolute;
-  bottom:0;
+  top:0;
   width: fit-content;
   height: fit-content;
+  font-size: .8rem;
   opacity: 80%;
   padding: .1rem .5rem;
   border-radius: 10px;
-  background-color: var(--background-color-light);
-  color: var(--font-color-light);
+  background-color: var(--bg-color);
+  color: var(--font-color);
   font-weight: 600;
 }
 
@@ -197,8 +230,8 @@ button:active{
 }
 
 .error-message{
-  background-color: var(--background-color-light);
-  border: var(--incorrect-answer-light) solid 2px;
+  background-color: var(--bg-color);
+  border: var(--incorrect-answer) solid 2px;
   padding: .5rem;
   border-radius: 15px;
   position:absolute;

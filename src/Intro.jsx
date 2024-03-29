@@ -1,4 +1,5 @@
 import React from "react";
+import ThemeToggle from './ThemeToggle.jsx'
 
 export default function Intro(props){
     // This is the list of categories for the quiz
@@ -53,6 +54,7 @@ function submitForm(e){
 
     return(
         <div className="intro">
+            <ThemeToggle/> 
             <h1>Quizzical</h1>
             <fieldset className="options">
                 <legend>Quiz Options</legend>
@@ -81,7 +83,7 @@ function submitForm(e){
                 Let's take a quiz!
             </p>
             {props.errorMessage && <p className="error-message">Oops, something went wrong, try again or refresh</p>}
-            <button onClick={submitForm} disabled={props.errorMessage}>Start Game</button>
+            <button onClick={submitForm} disabled={props.errorMessage} className="button">Start Game</button>
         </div>
     )
 }

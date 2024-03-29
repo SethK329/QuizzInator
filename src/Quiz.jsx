@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import ThemeToggle from './ThemeToggle.jsx'
 import { v4 as uuidv4 } from 'uuid';
 import {decode} from 'he';
 
@@ -121,10 +122,11 @@ export default function Quiz(props) {
 
     return(
         <div className="quiz">
+            <ThemeToggle/> 
             {quizElements}
             <div className="result-container">
             {newGame&&<p>You Scored {correctAnswers}/{questionData.length} correct answers</p>}
-            {newGame? <button onClick={props.restartGame}>Play again</button>:<button onClick={checkAnswers}>Check Answers</button>}
+            {newGame? <button onClick={props.restartGame} className="button">Play again</button>:<button onClick={checkAnswers} className="button">Check Answers</button>}
             </div>
         </div>
     )
