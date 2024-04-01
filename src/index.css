@@ -107,7 +107,7 @@ button:active{
   display: flex;
   flex-direction: column;
   max-width: 600px;
-  padding-top: 3rem;
+  padding: 3rem 0 2rem;
 }
 
 .quiz{
