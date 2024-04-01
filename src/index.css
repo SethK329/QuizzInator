@@ -24,7 +24,7 @@
   --incorrect-answer: #E31C1C;
   --bg-gradient:  radial-gradient(
     farthest-corner circle at 100% 0% in oklab,
-    oklch(35% 0.18 107) -8% -8%, 24%, oklch(30% 0 0) 34% 51%, oklch(30% 0.15 225 / 100%) 100%
+    oklch(35% 0.18 107) -8% -8%, 24%, oklch(30% 0 101) 34% 51%, oklch(30% 0.15 221 / 100%) 100%
   );
   --theme-image: url("./public/moonIcon.jpg");
 }
