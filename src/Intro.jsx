@@ -30,10 +30,16 @@ export default function Intro(props){
                                                         {id: 32, name: 'Entertainment: Cartoon & Animations'}
                                                     ])
 
-// basic quiz options by default
-const [formData, setFormData] = React.useState({category: 'any', difficulty: 'easy', amount: '5'});
+// basic quiz options by default and remembers previous choices in local storage.
+const [formData, setFormData] = React.useState(JSON.parse(localStorage.getItem('formData')) || {category: 'any', difficulty: 'easy', amount: '5'});
 
+// this is used to render the categories in the dropdown from the list retrieved from the API
 const categoriesElements = categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>);
+
+// This syncs the formdata to local storage so that user selections are remembered between rounds.
+React.useEffect(()=>{
+    localStorage.setItem('formData', JSON.stringify(formData))
+},[formData])
 
 // makes the user inputs controlled components so that the updated data can be passed when needed.
 function handleChange(e){
@@ -47,6 +53,7 @@ function handleChange(e){
         )
     })
 }
+
 // passes the users selections for the quiz up to the app component where the fetch is run, that data gets passed to the quiz component
 function submitForm(e){
     e.preventDefault()
@@ -61,19 +68,19 @@ function submitForm(e){
             <fieldset className="options">
                 <legend> Quiz Options </legend>
                 <label htmlFor="category">Choose a category:</label>
-                <select id="category" name="category" onChange={handleChange}>
+                <select id="category" name="category" value={formData.category} onChange={handleChange}>
                     <option key="8" value="any" >Any Category</option>
                     {categoriesElements}
                 </select>
                 <label htmlFor="difficulty">Choose difficulty:</label>
-                <select id="difficulty" name="difficulty" onChange={handleChange}>
+                <select id="difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange}>
                     <option value="any" >Any</option>
                     <option value="easy" >Easy</option>
                     <option value="medium" >Medium</option>
                     <option value="hard" >Hard</option>
                 </select>
                 <label htmlFor="amount">Number of questions:</label>
-                <select id="amount" name="amount" onChange={handleChange}>
+                <select id="amount" name="amount" value={formData.amount} onChange={handleChange}>
                     <option value="5" >5</option>
                     <option value="10" >10</option>
                     <option value="15" >15</option>

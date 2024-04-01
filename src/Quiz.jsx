@@ -10,7 +10,7 @@ export default function Quiz(props) {
     const [newGame, setNewGame] = React.useState(false)
     const [correctAnswers, setCorrectAnswers] = React.useState(0)
     const allCorrect = correctAnswers===questionData.length
-    
+
     // sets state when new data comes in with the quiz elements and then when the check answers button is 
     React.useEffect(() => {
         setQuizElements(quizElementsGenerator())
@@ -124,7 +124,7 @@ export default function Quiz(props) {
                     </div>)
         })
     }
-    console.log(allCorrect)
+    
     return(
         <div className="quiz">
             {allCorrect && <Confetti />}

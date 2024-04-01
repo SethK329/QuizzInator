@@ -16,7 +16,7 @@ React.useEffect(()=>{
     return ()=>clearTimeout(errorTimer)
 },[errorMessage])
 
-// this is run when the intro button is clicked, check for what selections were made and adjust the fetch accordingly
+// this is run when the start game button is clicked, check for what selections were made and adjust the fetch accordingly
   async function handleClick(formData) {
     const categoryValue = formData.category==="any"? "":`&category=${formData.category}` 
     const difficultyValue = formData.difficulty==="any"? "":`&difficulty=${formData.difficulty}`
