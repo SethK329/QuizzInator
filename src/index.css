@@ -2,6 +2,7 @@
   font-family: system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  --spinner-dimension: 75px;
   --bg-color: #F5F7FB;
   --font-color: #293264;
   --button-color: #4D5B9E;
@@ -86,6 +87,37 @@ body{
   top:unset;
 }
 
+.loading-spinner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: calc(50%-var(--spinner-dimension));
+  left: calc(50%-var(--spinner-dimension));
+  border-radius: 50%;
+  box-shadow: 0 0 6px 2px var(--font-color);
+}
+
+.spinner{
+  height: var(--spinner-dimension);
+  width: var(--spinner-dimension);
+  border-radius: 50%;
+  background-image: conic-gradient(
+      from 0deg at 0% 100% in oklab,
+      oklch(73% 0.08 221) 0%, 6%, oklch(89% 0.0 92) 17% 17%, 30%, oklch(90% 0.28 107) 100%
+  );
+  background-size: 300%;
+  animation: spin 1s infinite alternate;
+}
+
+.loading-spinner:after{
+  content: "Loading...";
+  font-weight: 600;
+  position: absolute;
+  bottom: calc(50%-var(--spinner-dimension));
+  text-align: center;
+}
+
 select{
   width: fit-content;
   min-width: 100px;
@@ -107,7 +139,7 @@ select:active{
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: .5rem;
+  padding: 1rem;
   border-radius: 5px;
   border-color: var(--font-color);
   font-weight: 500;
@@ -274,5 +306,11 @@ button:active{
   }
   100%{
     background-position: bottom;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

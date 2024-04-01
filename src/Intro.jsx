@@ -1,5 +1,6 @@
 import React from "react";
 import ThemeToggle from './ThemeToggle.jsx'
+import LoadingSpinner from "./LoadingSpinner.jsx";
 
 export default function Intro(props){
     // This is the list of categories for the quiz
@@ -54,10 +55,11 @@ function submitForm(e){
 
     return(
         <div className="intro">
-            <ThemeToggle/> 
+            <ThemeToggle/>
+            {props.loadingSpinner && <LoadingSpinner/>}
             <h1>Quizzical</h1>
             <fieldset className="options">
-                <legend>Quiz Options</legend>
+                <legend> Quiz Options </legend>
                 <label htmlFor="category">Choose a category:</label>
                 <select id="category" name="category" onChange={handleChange}>
                     <option key="8" value="any" >Any Category</option>

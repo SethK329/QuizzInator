@@ -10,7 +10,9 @@ function App() {
 
 // this is run when the error message is triggered and removes the message after 5 seconds
 React.useEffect(()=>{
-    const errorTimer = setTimeout(()=>setErrorMessage(false), 5000)
+    const errorTimer = setTimeout(()=>{
+      setLoadingSpinner(false)    
+      setErrorMessage(false)}, 5000)
     return ()=>clearTimeout(errorTimer)
 },[errorMessage])
 
@@ -19,16 +21,17 @@ React.useEffect(()=>{
     const categoryValue = formData.category==="any"? "":`&category=${formData.category}` 
     const difficultyValue = formData.difficulty==="any"? "":`&difficulty=${formData.difficulty}`
     try{
+      setLoadingSpinner(true)
       const response = await fetch(`https://opentdb.com/api.php?amount=${formData.amount}${categoryValue}${difficultyValue}`)
       if(!response.ok){
-        throw new Error("no response from server")    
+        throw new Error("no response from server")
       }else{
         const data = await response.json()
         setQuizData(data)
+        setLoadingSpinner(false)
         setGameActive(true)
-  
       }
-
+      
     }catch(error){
       // this triggers a useEffect that conditionally renders an error message for 5 seconds
       console.log(error)
@@ -43,7 +46,9 @@ React.useEffect(()=>{
 
     return (
       <div>
-        {!gameActive && <Intro handleClick={handleClick} errorMessage={errorMessage}/>}        
+        {!gameActive && <Intro handleClick={handleClick} 
+                               errorMessage={errorMessage}
+                               loadingSpinner={loadingSpinner}/>}        
         {gameActive && <Quiz data={quizData}
                             restartGame={restartGame}
         />}
