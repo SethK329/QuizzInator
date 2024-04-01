@@ -2,12 +2,15 @@ import React from "react";
 import Nav from './Nav.jsx'
 import { v4 as uuidv4 } from 'uuid';
 import {decode} from 'he';
+import Confetti from "./Confetti.jsx";
 
 export default function Quiz(props) {
     const [questionData, setQuestionData] = React.useState(generateQuizData())
     const [quizElements, setQuizElements] = React.useState([])
     const [newGame, setNewGame] = React.useState(false)
     const [correctAnswers, setCorrectAnswers] = React.useState(0)
+    const allCorrect = correctAnswers===questionData.length
+    
     // sets state when new data comes in with the quiz elements and then when the check answers button is 
     React.useEffect(() => {
         setQuizElements(quizElementsGenerator())
@@ -104,6 +107,8 @@ export default function Quiz(props) {
             if(newGame){
                 classList = "answer checked"
                 // this "if" is to style the selected input and the right answer correct or incorrect
+                // I am feeling uncertain about this approach now, it has a codes smell to me but I am not sure of how to fix it without a complete refactor.
+                // I think I would use state more to control the view rather than if statements and css classes if I was to do it again.
                 if(answer===question[question.id]||answer===question.correct_answer){
                     classList = answer===question.correct_answer?"answer correct":"answer checked incorrect"                    
                 }                    
@@ -119,9 +124,10 @@ export default function Quiz(props) {
                     </div>)
         })
     }
-
+    console.log(allCorrect)
     return(
         <div className="quiz">
+            {allCorrect && <Confetti />}
             <Nav restartGame={props.restartGame}/> 
             {quizElements}
             <div className="result-container">
