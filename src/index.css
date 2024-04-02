@@ -129,6 +129,12 @@ button:active{
 .question{
   border-bottom: #ADB7EB solid 2px;
   padding: 0 .5rem .25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.question>h2{
+  font-size: 1.5rem;
 }
 
 
@@ -152,6 +158,7 @@ button:active{
   border: solid 2px var(--button-color);
   background-color: var(--bg-color);
   text-align: center;
+  width: 100%;
 }
 
 .answer>label{
@@ -163,6 +170,7 @@ button:active{
   border-radius: 15px;
   font-weight: 600;
   font-size: 1.1rem;
+
 }
 
 .answer:has(input:checked){
@@ -317,7 +325,7 @@ button:active{
   .quiz, .intro{
     max-width: 90dvw;
     gap: 1rem;
-    padding: 1.5rem 0;
+    padding: 1.5rem 1rem;
   }
   .answer-container{
     flex-direction: column;

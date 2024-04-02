@@ -81,13 +81,13 @@ export default function Quiz(props) {
         return(questionData.map((question)=>{ 
            let decodedQuestion = decode(question.question)
            return(
-               <div key={question.id} id={question.id} className="question">
+               <li key={question.id} id={question.id} className="question">
                    <h2>{decodedQuestion}</h2>
                    <fieldset id="answer-container" className={question[question.id]??!newGame?"answer-container":"answer-container unanswered"}>
                        <legend htmlFor="answer-container">Select an answer</legend>
                        {generateAnswers(question)}    
                    </fieldset>
-               </div>
+               </li>
    
           ) 
        }))
@@ -128,8 +128,10 @@ export default function Quiz(props) {
     return(
         <div className="quiz">
             {allCorrect && <Confetti />}
-            <Nav restartGame={props.restartGame}/> 
+            <Nav restartGame={props.restartGame}/>
+            <ol className="quiz">
             {quizElements}
+            </ol> 
             <div className="result-container">
             {newGame&&<p>You Scored {correctAnswers}/{questionData.length} correct answers</p>}
             {newGame? <button onClick={props.restartGame} className="button">Play again</button>:<button onClick={checkAnswers} className="button">Check Answers</button>}
