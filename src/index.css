@@ -280,7 +280,8 @@ button:active{
   top: calc(50%-var(--spinner-dimension));
   left: calc(50%-var(--spinner-dimension));
   border-radius: 50%;
-  box-shadow: 0 0 6px 2px var(--font-color);
+  border: 3px solid var(--font-color);
+  box-shadow: 0 2px 6px 2px var(--font-color);
 }
 
 .spinner{
