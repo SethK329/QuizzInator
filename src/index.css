@@ -106,6 +106,12 @@ button:active{
   transform: scale(.9);
 }
 
+main{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .quiz,.intro{
   display: flex;
   flex-direction: column;
@@ -253,14 +259,15 @@ button:active{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  width: 100%;
+  gap:.75rem;
   .theme-toggle{
-    top:unset;}
+    position:unset;
+    }
 }
 
 .exit-button{
   padding: .25rem .5rem;
-  height: 2.5rem;
   border:none;
   border-radius: 15px;
   background-color: var(--button-color);
@@ -269,6 +276,7 @@ button:active{
   font-size: 1.2rem;
   cursor: pointer;
 }
+
 .error-message{
   background-color: var(--bg-color);
   border: var(--incorrect-answer) solid 2px;

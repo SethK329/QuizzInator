@@ -64,35 +64,41 @@ function submitForm(e){
         <div className="intro">
             <ThemeToggle/>
             {props.loadingSpinner && <LoadingSpinner/>}
-            <h1>Quizzical</h1>
-            <fieldset className="options">
-                <legend> Quiz Options </legend>
-                <label htmlFor="category">Choose a category:</label>
-                <select id="category" name="category" value={formData.category} onChange={handleChange}>
-                    <option key="8" value="any" >Any Category</option>
-                    {categoriesElements}
-                </select>
-                <label htmlFor="difficulty">Choose difficulty:</label>
-                <select id="difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange}>
-                    <option value="any" >Any</option>
-                    <option value="easy" >Easy</option>
-                    <option value="medium" >Medium</option>
-                    <option value="hard" >Hard</option>
-                </select>
-                <label htmlFor="amount">Number of questions:</label>
-                <select id="amount" name="amount" value={formData.amount} onChange={handleChange}>
-                    <option value="5" >5</option>
-                    <option value="10" >10</option>
-                    <option value="15" >15</option>
-                    <option value="20" >20</option>
-                </select>
-            </fieldset>
-            <p>If quizzes are quizzical what does that make tests?
-                <br></br>
-                Let's take a quiz!
-            </p>
-            {props.errorMessage && <p className="error-message">Oops, something went wrong, try again or refresh</p>}
-            <button onClick={submitForm} disabled={props.errorMessage} className="button">Start Game</button>
+            <header>
+                <h1>Quizzical</h1>
+            </header>
+            <main>
+                <form>
+                    <fieldset className="options">
+                        <legend> Quiz Options </legend>
+                        <label htmlFor="category">Choose a category:</label>
+                        <select id="category" name="category" value={formData.category} onChange={handleChange}>
+                            <option key="8" value="any" >Any Category</option>
+                            {categoriesElements}
+                        </select>
+                        <label htmlFor="difficulty">Choose difficulty:</label>
+                        <select id="difficulty" name="difficulty" value={formData.difficulty} onChange={handleChange}>
+                            <option value="any" >Any</option>
+                            <option value="easy" >Easy</option>
+                            <option value="medium" >Medium</option>
+                            <option value="hard" >Hard</option>
+                        </select>
+                        <label htmlFor="amount">Number of questions:</label>
+                        <select id="amount" name="amount" value={formData.amount} onChange={handleChange}>
+                            <option value="5" >5</option>
+                            <option value="10" >10</option>
+                            <option value="15" >15</option>
+                            <option value="20" >20</option>
+                        </select>
+                    </fieldset>
+                </form>
+                <p>If quizzes are quizzical what does that make tests?
+                    <br></br>
+                    Let's take a quiz!
+                </p>
+                {props.errorMessage && <p className="error-message">Oops, something went wrong, try again or refresh</p>}
+                <button onClick={submitForm} disabled={props.errorMessage} className="button">Start Game</button>
+            </main>
         </div>
     )
 }

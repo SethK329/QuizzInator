@@ -129,13 +129,15 @@ export default function Quiz(props) {
         <div className="quiz">
             {allCorrect && <Confetti />}
             <Nav restartGame={props.restartGame}/>
-            <ol className="quiz">
-            {quizElements}
-            </ol> 
-            <div className="result-container">
-            {newGame&&<p>You Scored {correctAnswers}/{questionData.length} correct answers</p>}
-            {newGame? <button onClick={props.restartGame} className="button">Play again</button>:<button onClick={checkAnswers} className="button">Check Answers</button>}
-            </div>
+            <main>
+                <ol className="quiz">
+                {quizElements}
+                </ol> 
+                <div className="result-container">
+                {newGame&&<p>You Scored {correctAnswers}/{questionData.length} correct answers</p>}
+                {newGame? <button onClick={props.restartGame} className="button">Play again</button>:<button onClick={checkAnswers} className="button">Check Answers</button>}
+                </div>
+            </main>
         </div>
     )
 }
